@@ -50,7 +50,7 @@ public class ActivityClientController {
            activityVO.setType(activity.getType());
            activityVO.setActivityId(activity.getActivityId());
            if(activity.getStatus()==0){
-            activityVO.setStatus("正在进行中");
+               activityVO.setStatus("正在进行中");
            }else{
                activityVO.setStatus("活动已结束");
            }

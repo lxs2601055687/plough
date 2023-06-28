@@ -20,6 +20,7 @@ import org.springframework.util.DigestUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static com.ruoyi.project.constant.RedisConstants.*;
@@ -144,6 +145,35 @@ public class UserClientServiceImpl extends ServiceImpl<UserClientMapper, User>
         // 5.发送验证码
         // 返回ok
         return "成功";
+    }
+
+    @Override
+    public User passwordUpdate(String uid,String oldPassword,String newPassword){
+        String encryptOldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+        String encryptNewPassword = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uid", uid);
+        User user = userClientMapper.selectOne(queryWrapper);
+        if(!Objects.equals(user.getPassword(), encryptOldPassword)){
+            return null;
+        }
+        user.setPassword(encryptNewPassword);
+        int update=userClientMapper.updateById(user);
+        return user;
+    }
+
+    @Override
+    public User phoneUpdate(String uid,String phone,String code){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uid", uid);
+        User user = userClientMapper.selectOne(queryWrapper);
+        String cacheCode = stringRedisTemplate.opsForValue().get(UPDATE_CODE_KEY + phone);
+        if (cacheCode == null || !cacheCode.equals(code)) {
+            return null;
+        }
+        user.setPhone(phone);
+        int update=userClientMapper.updateById(user);
+        return user;
     }
 }
 

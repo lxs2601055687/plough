@@ -1,6 +1,7 @@
 package com.ruoyi.contest.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.domain.PageQuery;
@@ -18,6 +19,8 @@ import com.ruoyi.contest.mapper.ActivityMapper;
 import com.ruoyi.contest.service.IActivityService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -94,6 +97,19 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public Boolean updateByBo(ActivityBo bo) {
         Activity update = BeanUtil.toBean(bo, Activity.class);
+        String activityId = update.getActivityId();
+        QueryWrapper<Activity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("activity_id",activityId);
+        Activity oldActivity = baseMapper.selectOne(queryWrapper);
+        int result = 0;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime oldTime = LocalDateTime.parse(oldActivity.getEndTime(), formatter);
+        LocalDateTime newTime = LocalDateTime.parse(bo.getEndTime(), formatter);
+        if (oldTime.isBefore(newTime)) {
+            update.setStatus(0L);
+        }else {
+            update.setStatus(1L);
+        }
         validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
     }

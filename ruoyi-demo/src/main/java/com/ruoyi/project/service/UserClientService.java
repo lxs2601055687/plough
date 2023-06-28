@@ -66,4 +66,8 @@ public interface UserClientService extends IService<User> {
     User selectByInvitation(String invitation);
 
      String sendCode2(String mobile);
+
+    User phoneUpdate(String uid, String phone, String code);
+
+    User passwordUpdate(String uid, String oldPassword, String newPassword);
 }

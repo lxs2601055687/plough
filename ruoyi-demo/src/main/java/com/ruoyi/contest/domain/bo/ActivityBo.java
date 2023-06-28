@@ -74,5 +74,7 @@ public class ActivityBo extends BaseEntity {
      */
     private String description;
 
+    private int status;
+
 
 }

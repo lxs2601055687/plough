@@ -1,12 +1,15 @@
 package com.ruoyi.contest.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.domain.PageQuery;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.contest.domain.TeamInfo;
+import com.ruoyi.contest.mapper.TeamInfoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.contest.domain.bo.UserBo;
@@ -14,6 +17,7 @@ import com.ruoyi.contest.domain.vo.UserVo;
 import com.ruoyi.contest.domain.User;
 import com.ruoyi.contest.mapper.UserMapper;
 import com.ruoyi.contest.service.IUserService;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,7 @@ import java.util.Collection;
 public class UserServiceImpl implements IUserService {
 
     private final UserMapper baseMapper;
+    private final TeamInfoMapper teamInfoMapper;
 
     /**
      * 查询学生管理
@@ -111,5 +116,29 @@ public class UserServiceImpl implements IUserService {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteBatchIds(ids) > 0;
+    }
+
+    @Override
+    public boolean resetById(Long ids) {
+        String newPassword = DigestUtils.md5DigestAsHex("123456".getBytes());
+        User user = new User();
+        user.setPassword(newPassword);
+        user.setId(ids);
+        int i = baseMapper.updateById(user);
+        return i==1;
+    }
+
+    @Override
+    public User searchOne(String uid) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uid", uid);
+        return baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public List searchList(String teamId) {
+        QueryWrapper<TeamInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("team_id", teamId);
+        return teamInfoMapper.selectList(queryWrapper);
     }
 }

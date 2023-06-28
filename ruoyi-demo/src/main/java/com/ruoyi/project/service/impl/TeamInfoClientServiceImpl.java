@@ -100,6 +100,14 @@ public class TeamInfoClientServiceImpl extends ServiceImpl<TeamInfoClientMapper,
         queryWrapper.eq("team_id", teamId);
         return teamInfoMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public List<TeamInfo> getTeams(String uid) {
+        QueryWrapper<TeamInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("team_member_id", uid);
+        return teamInfoMapper.selectList(queryWrapper);
+
+    }
 }
 
 

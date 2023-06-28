@@ -46,4 +46,10 @@ public interface IUserService {
      * 校验并批量删除学生管理信息
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    boolean resetById(Long ids);
+
+    User searchOne(String uid);
+
+    List searchList(String teamId);
 }

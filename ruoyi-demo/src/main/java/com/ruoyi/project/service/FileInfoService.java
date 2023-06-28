@@ -18,4 +18,6 @@ public interface FileInfoService extends IService<FileInfo> {
     List<FileInfo> searchActivityUrl(String activityId);
 
     Boolean addProjectUrl(String projectId, String url, Long ossId);
+
+    List<FileInfo> searchTeamUrl(String teamId);
 }

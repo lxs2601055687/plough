@@ -89,7 +89,8 @@ public class Permission {
               "      parentId: 10,\n" +
               "      id: 4,\n" +
               "      meta: {\n" +
-              "        title: 'menu.form.advanced-form'\n" +
+              "        title: 'menu.form.advanced-form',\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'AdvanceForm'\n" +
               "    },\n" +
@@ -144,7 +145,7 @@ public class Permission {
               "      id: 10014,\n" +
               "      meta: {\n" +
               "        title: 'menu.list.search-list',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      redirect: '/list/search/article',\n" +
               "      component: 'SearchLayout'\n" +
@@ -155,7 +156,7 @@ public class Permission {
               "      id: 10015,\n" +
               "      meta: {\n" +
               "        title: 'menu.list.search-list.articles',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'SearchArticles'\n" +
               "    },\n" +
@@ -165,7 +166,7 @@ public class Permission {
               "      id: 10016,\n" +
               "      meta: {\n" +
               "        title: 'menu.list.search-list.projects',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'SearchProjects'\n" +
               "    },\n" +

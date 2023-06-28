@@ -8,10 +8,7 @@ import com.ruoyi.project.model.dto.team.TeamSearchRequest;
 import com.ruoyi.project.model.entity.Activity;
 import com.ruoyi.project.model.entity.TeamMember;
 import com.ruoyi.project.service.TeamInfoClientService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -51,8 +48,13 @@ public class TeamInfoClientController  {
     @PostMapping("/team/searchByName")
     public BaseResponse<List<Activity>> getActivityByTeam (@RequestBody TeamSearchRequest teamSearchRequest) {
         String user = teamSearchRequest.getUser();
-        List<com.ruoyi.project.model.entity.Activity> activities = teamInfoClientService.searchTeamByName(user);
+        List<Activity> activities = teamInfoClientService.searchTeamByName(user);
         return ResultUtils.success(activities);
     }
+    @GetMapping("/api/workplace/teams")
+    public BaseResponse<List<TeamInfo>> getTeams (@RequestParam("uid") String uid) {
 
+            List<TeamInfo> teamInfoList =  teamInfoClientService.getTeams(uid);
+            return ResultUtils.success(teamInfoList);
+    }
 }

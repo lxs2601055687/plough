@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+import com.ruoyi.contest.domain.User;
 import lombok.RequiredArgsConstructor;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.*;
@@ -105,4 +106,27 @@ public class UserController extends BaseController {
                           @PathVariable Long[] ids) {
         return toAjax(iUserService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
+    @GetMapping("/reset/{ids}")
+    public R<Void> reset(@PathVariable Long ids) {
+        return toAjax(iUserService.resetById(ids));
+    }
+    @GetMapping("/info/{uid}")
+    public R<User> searchUserInfo (@PathVariable String uid) {
+         User user  = iUserService.searchOne(uid);
+         if (user == null) {
+             return R.ok(null);
+         } else {
+             return R.ok(user);
+         }
+    }
+    @GetMapping("/info2/{teamId}")
+    public R<List> searchUserInfo2 (@PathVariable String teamId) {
+        List list  = iUserService.searchList(teamId);
+        if (list == null) {
+            return R.ok(null);
+        } else {
+            return R.ok(list);
+        }
+    }
+
 }

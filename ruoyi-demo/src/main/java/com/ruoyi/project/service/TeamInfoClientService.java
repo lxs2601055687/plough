@@ -22,4 +22,6 @@ public interface TeamInfoClientService extends IService<TeamClientInfo> {
     List<Activity> searchTeamByName(String user);
 
     List<TeamInfo> searchTeamById(String teamId);
+
+    List<TeamInfo> getTeams(String uid);
 }

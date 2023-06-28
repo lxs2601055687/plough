@@ -1,6 +1,7 @@
 package com.ruoyi.contest.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.domain.PageQuery;
@@ -8,6 +9,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.contest.Utils.RandomUtil;
+import com.ruoyi.project.mapper.FileInfoMapper;
+import com.ruoyi.project.model.entity.FileInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.contest.domain.bo.ProjectBo;
@@ -31,6 +34,7 @@ import java.util.Collection;
 public class ProjectServiceImpl implements IProjectService {
 
     private final ProjectMapper baseMapper;
+    private final FileInfoMapper fileInfoMapper;
 
     /**
      * 查询项目管理
@@ -111,5 +115,17 @@ public class ProjectServiceImpl implements IProjectService {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteBatchIds(ids) > 0;
+    }
+
+    @Override
+    public Long getProject(String teamId) {
+        QueryWrapper<FileInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("team_id", teamId);
+        FileInfo fileInfo = fileInfoMapper.selectOne(queryWrapper);
+        if(fileInfo == null) {
+            return null;
+        }else {
+            return fileInfo.getOssId();
+        }
     }
 }

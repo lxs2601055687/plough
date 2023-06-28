@@ -243,6 +243,42 @@ public class UserClientController {
            return ResultUtils.success("更改失败");
         }
         return ResultUtils.success(uid);
+    }
+    @PostMapping("/api/user/passwordUpdate")
+    public BaseResponse<String> passwordUpdate(@RequestBody PasswordUpdateRequest passwordUpdateRequest){
+        String uid=passwordUpdateRequest.getUid();
+        String oldPassword=passwordUpdateRequest.getOldPassword();
+        String newPassword=passwordUpdateRequest.getNewPassword();
+        if (StringUtils.isAnyBlank(oldPassword,newPassword)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入栏不能为空!");
+        }
+        User user = service.passwordUpdate(uid,oldPassword,newPassword);
+        if (user==null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"旧密码错误!");
+        }
+        return ResultUtils.success(newPassword);
 
+    }
+
+
+    @PostMapping("/api/user/phoneUpdate")
+    public BaseResponse<Boolean> phoneUpdate(@RequestBody PhoneUpdateRequest phoneUpdateRequest){
+        String uid=phoneUpdateRequest.getUid();
+        String phone=phoneUpdateRequest.getPhone();
+        String code=phoneUpdateRequest.getCode();
+        if(phone==null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"手机号不能为空!");
+        }
+        if(code==null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"验证码不能为空!");
+        }
+        if (RegexUtils.isPhoneInvalid(phone)) {
+            return ResultUtils.error(405,"手机号格式错误！");
+        }
+        User user=service.phoneUpdate(uid,phone,code);
+        if(user==null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"验证码错误!");
+        }
+        return ResultUtils.success(true);
     }
 }

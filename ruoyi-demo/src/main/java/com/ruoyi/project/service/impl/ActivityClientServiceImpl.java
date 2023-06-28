@@ -73,7 +73,7 @@ public class ActivityClientServiceImpl extends ServiceImpl<ActivityClientMapper,
         queryWrapper.eq("activityId",activityId);
         Activity oldActivity = activityClientMapper.selectOne(queryWrapper);
         int result = 0;
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime oldTime = LocalDateTime.parse(oldActivity.getEndTime(), formatter);
             LocalDateTime newTime = LocalDateTime.parse(activity.getEndTime(), formatter);
             if (oldTime.isBefore(newTime)) {

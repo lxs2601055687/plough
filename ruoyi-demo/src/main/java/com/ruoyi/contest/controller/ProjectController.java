@@ -105,4 +105,9 @@ public class ProjectController extends BaseController {
                           @PathVariable Long[] ids) {
         return toAjax(iProjectService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
+    @GetMapping("/download/{teamId}")
+    public R<Long> getProject (@PathVariable String teamId){
+        Long ossId = iProjectService.getProject(teamId);
+        return R.ok(ossId);
+    }
 }

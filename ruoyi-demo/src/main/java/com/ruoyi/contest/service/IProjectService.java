@@ -46,4 +46,6 @@ public interface IProjectService {
      * 校验并批量删除项目管理信息
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    Long getProject(String projectId);
 }
