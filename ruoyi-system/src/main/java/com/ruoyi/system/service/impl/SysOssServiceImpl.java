@@ -20,7 +20,9 @@ import com.ruoyi.oss.core.OssClient;
 import com.ruoyi.oss.entity.UploadResult;
 import com.ruoyi.oss.enumd.AccessPolicyType;
 import com.ruoyi.oss.factory.OssFactory;
+import com.ruoyi.project.mapper.AwardClientMapper;
 import com.ruoyi.project.mapper.FileInfoMapper;
+import com.ruoyi.project.model.entity.Award;
 import com.ruoyi.project.model.entity.FileInfo;
 import com.ruoyi.system.domain.SysOss;
 import com.ruoyi.system.domain.bo.SysOssBo;
@@ -53,6 +55,8 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
     private final SysOssMapper baseMapper;
     @Resource
     FileInfoMapper fileInfoMapper;
+    @Resource
+    AwardClientMapper awardClientMapper;
 
     @Override
     public TableDataInfo<SysOssVo> queryPageList(SysOssBo bo, PageQuery pageQuery) {
@@ -163,6 +167,9 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
         LambdaQueryWrapper<FileInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.in(FileInfo::getOssId, ids);
         System.out.println(ids);
+        LambdaQueryWrapper<Award> wrapper1 =new LambdaQueryWrapper<>();
+        wrapper1.in(Award::getOssId, ids);
+        awardClientMapper.delete(wrapper1);
         int delete = fileInfoMapper.delete(wrapper);
         return baseMapper.deleteBatchIds(ids) > 0;
     }

@@ -40,7 +40,7 @@ public class ProjectClientController {
     @PostMapping("/api/search/project")
     public BaseResponse<Project> searchProject(@RequestBody ProjectSearchRequest projectSearchRequest) {
         String teamId = projectSearchRequest.getTeamId();
-        Project result =  projectClientService.searchProject(teamId);
+        com.ruoyi.project.model.entity.Project result =  projectClientService.searchProject(teamId);
         if( result == null) {
             return  ResultUtils.success(null);
         } else {

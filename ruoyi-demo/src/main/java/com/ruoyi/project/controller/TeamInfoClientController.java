@@ -48,7 +48,7 @@ public class TeamInfoClientController  {
     @PostMapping("/team/searchByName")
     public BaseResponse<List<Activity>> getActivityByTeam (@RequestBody TeamSearchRequest teamSearchRequest) {
         String user = teamSearchRequest.getUser();
-        List<Activity> activities = teamInfoClientService.searchTeamByName(user);
+        List<com.ruoyi.project.model.entity.Activity> activities = teamInfoClientService.searchTeamByName(user);
         return ResultUtils.success(activities);
     }
     @GetMapping("/api/workplace/teams")
