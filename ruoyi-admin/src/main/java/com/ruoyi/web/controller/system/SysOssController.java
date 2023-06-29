@@ -100,6 +100,19 @@ public class SysOssController extends BaseController {
         map.put("ossId", oss.getOssId().toString());
         return R.ok(map);
     }
+    @PostMapping(value = "/api/oss/pdf", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public R<Map<String, String>> uploadPdf(@RequestPart("multipartFile") MultipartFile file) {
+        if (ObjectUtil.isNull(file)) {
+            throw new ServiceException("上传文件不能为空");
+        }
+        SysOssVo oss = iSysOssService.upload(file);
+        Map<String, String> map = new HashMap<>(2);
+        map.put("url", oss.getUrl());
+        map.put("fileName", oss.getOriginalName());
+        map.put("ossId", oss.getOssId().toString());
+        return R.ok(map);
+    }
+
     /**
      * 下载OSS对象
      *

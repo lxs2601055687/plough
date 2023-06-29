@@ -113,6 +113,13 @@ spring:
     timeout: 10s
     # 是否开启ssl
     ssl: false
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 50MB
+      max-request-size: 50MB
+
 
 redisson:
   # redis key前缀
