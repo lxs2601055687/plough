@@ -48,7 +48,7 @@ public class Permission {
               "      id: 2,\n" +
               "      meta: {\n" +
               "        title: 'menu.dashboard.analysis',\n" +
-              "        show: false\n" +
+              "        show: true\n" +
               "      },\n" +
               "      component: 'Analysis',\n" +
               "      path: '/dashboard/analysis'\n" +
