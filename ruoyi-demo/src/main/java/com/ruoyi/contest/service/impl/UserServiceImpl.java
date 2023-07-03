@@ -127,7 +127,6 @@ public class UserServiceImpl implements IUserService {
         int i = baseMapper.updateById(user);
         return i==1;
     }
-
     @Override
     public User searchOne(String uid) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();

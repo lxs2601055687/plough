@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.plough.mapper.SoilDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.ruoyi.plough.domain.SoilData">
+            <id property="soilId" column="soil_Id" jdbcType="INTEGER"/>
+            <result property="soilLocation" column="soil_location" jdbcType="VARCHAR"/>
+            <result property="collectionSite" column="collection_site" jdbcType="VARCHAR"/>
+            <result property="levelPhysical" column="level_physical" jdbcType="VARCHAR"/>
+            <result property="soilTypeCode" column="soil_type_code" jdbcType="INTEGER"/>
+            <result property="soilType" column="soil_type" jdbcType="VARCHAR"/>
+            <result property="soilSubtype" column="soil_subtype" jdbcType="VARCHAR"/>
+            <result property="soilName" column="soil_name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="landform" column="landform" jdbcType="VARCHAR"/>
+            <result property="areaHectares" column="area_hectares" jdbcType="INTEGER"/>
+            <result property="areaM" column="area_m" jdbcType="INTEGER"/>
+            <result property="parentMaterial" column="parent_material" jdbcType="VARCHAR"/>
+            <result property="profileConfiguration" column="profile_configuration" jdbcType="VARCHAR"/>
+            <result property="effectiveSoilDepth" column="effective_soil_depth" jdbcType="VARCHAR"/>
+            <result property="mainTraits" column="main_traits" jdbcType="VARCHAR"/>
+            <result property="prodFactor" column="prod_factor" jdbcType="VARCHAR"/>
+            <result property="prodPerformance" column="prod_performance" jdbcType="VARCHAR"/>
+            <result property="soilUsage" column="soil_usage" jdbcType="VARCHAR"/>
+            <result property="notes" column="notes" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        soil_Id,soil_location,collection_site,
+        level_physical,soil_type_code,soil_type,
+        soil_subtype,soil_name,description,
+        landform,area_hectares,area_m,
+        parent_material,profile_configuration,effective_soil_depth,
+        main_traits,prod_factor,prod_performance,
+        soil_usage,notes
+    </sql>
+</mapper>
