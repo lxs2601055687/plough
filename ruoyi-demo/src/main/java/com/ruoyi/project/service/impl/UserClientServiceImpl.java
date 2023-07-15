@@ -40,20 +40,17 @@ public class UserClientServiceImpl extends ServiceImpl<UserClientMapper, User>
     StringRedisTemplate stringRedisTemplate;
 
     @Override
-    public String userRegister(String userAccount, String userPassword,String name) {
+    public String userRegister(String userPhone, String userPassword,String name) {
 
           User newUser=new User();
           String encryptPassword = DigestUtils.md5DigestAsHex(userPassword.getBytes());
-          newUser.setUid(userAccount);
+          newUser.setPhone(userPhone);
           newUser.setRole("user");
           newUser.setPassword(encryptPassword);
           newUser.setName(name);
           newUser.setInvitation( UUIDUtils.getUUID());
-            int insert = userClientMapper.insert(newUser);
-            if(insert==1){
-             return userAccount;
-            }
-        return userAccount;
+          userClientMapper.insert(newUser);
+        return userPhone;
     }
 
     @Override

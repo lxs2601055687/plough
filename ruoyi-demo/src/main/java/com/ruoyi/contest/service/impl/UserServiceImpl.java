@@ -82,6 +82,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Boolean insertByBo(UserBo bo) {
         User add = BeanUtil.toBean(bo, User.class);
+        add.setUid("0");
         validEntityBeforeSave(add);
         boolean flag = baseMapper.insert(add) > 0;
         if (flag) {

@@ -73,14 +73,14 @@ public class UserClientController {
         if (userRegisterRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        String userAccount = userRegisterRequest.getUid();
+        String userPhone= userRegisterRequest.getPhone();
         String userPassword = userRegisterRequest.getPassword();
         String name=userRegisterRequest.getUsername();
-        if (StringUtils.isAnyBlank(userAccount, userPassword)) {
+        if (StringUtils.isAnyBlank(userPhone, userPassword)) {
             return null;
         }
-       String uid = service.userRegister(userAccount, userPassword,name);
-        return ResultUtils.success(uid);
+       String phone = service.userRegister(userPhone, userPassword,name);
+        return ResultUtils.success(phone);
     }
 
     /**

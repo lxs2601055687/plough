@@ -10,6 +10,7 @@ public class UserRegisterRequest {
     private String password;
 
     private String uid;
+    private String phone;
 
     public UserRegisterRequest() {
     }

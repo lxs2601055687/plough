@@ -26,26 +26,25 @@ public class Permission {
               "      parentId: 1,\n" +
               "      id: 7,\n" +
               "      meta: {\n" +
-              "        title: 'menu.dashboard.monitor',\n" +
+              "        title: 'menu.dashboard.workplace',\n" +
               "        show: true\n" +
               "      },\n" +
               "      component: 'Workplace'\n" +
               "    },\n" +
               "    {\n" +
-              "      name: 'monitor',\n" +
-              "      path: 'https://www.baidu.com/',\n" +
+              "      name: 'Monitor',\n" +
               "      parentId: 1,\n" +
-              "      id: 3,\n" +
+              "      id: 2,\n" +
               "      meta: {\n" +
-              "        title: 'menu.dashboard.workplace',\n" +
-              "        target: '_blank',\n" +
-              "        show: false\n" +
-              "      }\n" +
+              "        title: 'menu.dashboard.monitor',\n" +
+              "        show: true\n" +
+              "      },\n" +
+              "        component: 'Monitor',\n" +
               "    },\n" +
               "    {\n" +
               "      name: 'Analysis',\n" +
               "      parentId: 1,\n" +
-              "      id: 2,\n" +
+              "      id: 3,\n" +
               "      meta: {\n" +
               "        title: 'menu.dashboard.analysis',\n" +
               "        show: true\n" +

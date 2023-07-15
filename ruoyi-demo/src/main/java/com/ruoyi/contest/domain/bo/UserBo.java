@@ -24,7 +24,7 @@ public class UserBo extends BaseEntity {
     /**
      * 学号
      */
-    @NotBlank(message = "学号不能为空", groups = { AddGroup.class, EditGroup.class })
+   /* @NotBlank(message = "学号不能为空", groups = { AddGroup.class, EditGroup.class })*/
     private String uid;
 
     /**
@@ -41,7 +41,7 @@ public class UserBo extends BaseEntity {
     /**
      * 学院
      */
-    @NotBlank(message = "学院不能为空", groups = { AddGroup.class, EditGroup.class })
+   /* @NotBlank(message = "学院不能为空", groups = { AddGroup.class, EditGroup.class })*/
     private String academy;
 
     /**
@@ -57,7 +57,7 @@ public class UserBo extends BaseEntity {
     /**
      * 班级
      */
-    @NotBlank(message = "班级不能为空", groups = { AddGroup.class, EditGroup.class })
+   /* @NotBlank(message = "班级不能为空", groups = { AddGroup.class, EditGroup.class })*/
     private String studentClass;
 
     /**
@@ -68,7 +68,7 @@ public class UserBo extends BaseEntity {
     /**
      * 专业
      */
-    @NotBlank(message = "专业不能为空", groups = { AddGroup.class, EditGroup.class })
+   /* @NotBlank(message = "专业不能为空", groups = { AddGroup.class, EditGroup.class })*/
     private String specializedSubject;
 
     /**
