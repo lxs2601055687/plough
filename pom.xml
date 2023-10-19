@@ -90,7 +90,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <!-- hutool 的依赖配置-->
             <dependency>
                 <groupId>cn.hutool</groupId>
@@ -153,6 +152,7 @@
                 <artifactId>sa-token-spring-boot-starter</artifactId>
                 <version>${satoken.version}</version>
             </dependency>
+
             <!-- Sa-Token 整合 jwt -->
             <dependency>
                 <groupId>cn.dev33</groupId>

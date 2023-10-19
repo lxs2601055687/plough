@@ -156,12 +156,12 @@ public class UserClientController {
                 token.setToken(JWTToken);
             }
         }else{
-            String uid = userLoginRequest.getUsername();
+            String phone = userLoginRequest.getUsername();
             String userPassword = userLoginRequest.getPassword();
-            if (StringUtils.isAnyBlank(uid, userPassword)) {
+            if (StringUtils.isAnyBlank(phone, userPassword)) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR);
             }
-            User user = service.userLogin(uid,userPassword,request);
+            User user = service.userLogin(phone,userPassword,request);
             if(user == null){
                 throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
             }

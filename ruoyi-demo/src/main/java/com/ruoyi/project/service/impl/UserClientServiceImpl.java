@@ -54,11 +54,11 @@ public class UserClientServiceImpl extends ServiceImpl<UserClientMapper, User>
     }
 
     @Override
-    public User userLogin(String uid, String password, HttpServletRequest request) {
-        if (StringUtils.isAnyBlank(uid, password)) {
+    public User userLogin(String phone, String password, HttpServletRequest request) {
+        if (StringUtils.isAnyBlank(phone, password)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
         }
-        if (uid.length() <4) {
+        if (phone.length() <4) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号错误");
         }
         if (password.length() <3) {
@@ -68,7 +68,7 @@ public class UserClientServiceImpl extends ServiceImpl<UserClientMapper, User>
         String encryptPassword = DigestUtils.md5DigestAsHex(password.getBytes());
         // 查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("uid", uid);
+        queryWrapper.eq("phone", phone);
         queryWrapper.eq("password",encryptPassword);
         User user = userClientMapper.selectOne(queryWrapper);
         // 用户不存在

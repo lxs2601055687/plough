@@ -37,7 +37,7 @@ public interface UserClientService extends IService<User> {
      * @param request
      * @return 脱敏后的用户信息
      */
-     User userLogin(String uid, String Password, HttpServletRequest request);
+     User userLogin(String phone, String Password, HttpServletRequest request);
 
     /**
      * 获取当前登录用户

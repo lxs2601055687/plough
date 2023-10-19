@@ -53,7 +53,7 @@ public class Permission {
               "      path: '/dashboard/analysis'\n" +
               "    },\n" +
               "\n" +
-              "    // form\n" +
+           /*   "    // form\n" +
               "    {\n" +
               "      name: 'form',\n" +
               "      parentId: 0,\n" +
@@ -93,7 +93,7 @@ public class Permission {
               "      },\n" +
               "      component: 'AdvanceForm'\n" +
               "    },\n" +
-              "\n" +
+              "\n"*/
               "    // list\n" +
               "    {\n" +
               "      name: 'list',\n" +
@@ -313,7 +313,7 @@ public class Permission {
               "      id: 10029,\n" +
               "      meta: {\n" +
               "        title: 'menu.account.center',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'AccountCenter'\n" +
               "    },\n" +
