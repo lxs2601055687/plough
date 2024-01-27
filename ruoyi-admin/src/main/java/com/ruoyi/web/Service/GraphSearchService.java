@@ -11,4 +11,7 @@ public interface GraphSearchService {
      * @return
      */
   public  List<NodeVo>  selectRelatedNode(String name);
+
+
+  public  List<NodeVo>  selectRelatedNodeBySop(String name);
 }

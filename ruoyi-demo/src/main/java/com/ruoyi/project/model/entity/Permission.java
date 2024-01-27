@@ -472,7 +472,7 @@ public class Permission {
               "      id: 10015,\n" +
               "      meta: {\n" +
               "        title: 'menu.list.search-list.articles',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'SearchArticles'\n" +
               "    },\n" +
@@ -482,7 +482,7 @@ public class Permission {
               "      id: 10016,\n" +
               "      meta: {\n" +
               "        title: 'menu.list.search-list.projects',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'SearchProjects'\n" +
               "    },\n" +

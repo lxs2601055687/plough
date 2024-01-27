@@ -25,11 +25,18 @@ public class GraphSearchServiceImpl implements GraphSearchService {
         List<Relationship> relationships = relationRepository.selectRelatedNode(name);
         List<Relationship> relationships1 = relationRepository.selectRelatedRootNode(name);
         relationships.addAll(relationships1);
+        //对relationships进行去重
+        List<Relationship> relationshipSet = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (!relationshipSet.contains(relationship)) {
+                relationshipSet.add(relationship);
+            }
+        }
         //拿到一个数组数组值是Relationship的from和to
         int size = nodeVos.size();
         //定义一个数组，长度是nodeVos的长度
         List<String> nodeIdsList = new ArrayList<>();
-        relationships.forEach(relationship -> {
+        relationshipSet.forEach(relationship -> {
             nodeIdsList.add(relationship.getFrom().toString());
             nodeIdsList.add(relationship.getTo().toString());
 
@@ -57,5 +64,10 @@ public class GraphSearchServiceImpl implements GraphSearchService {
         });
 
         return nodeVoList;
+    }
+
+    @Override
+    public List<NodeVo> selectRelatedNodeBySop(String name) {
+        return null;
     }
 }

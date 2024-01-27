@@ -20,11 +20,13 @@ public class NodeTest {
     NodeRepository nodeRepository;
     @Autowired
     RelationRepository relationRepository;
+
     @Test
     public void test() {
         List<Node> nodes = nodeRepository.selectAllIndex();
         nodes.forEach(System.out::println);
     }
+
     @Test
     public void test1() {
         List<Relationship> all = relationRepository.selectAll();
@@ -38,9 +40,16 @@ public class NodeTest {
         all.forEach(System.out::println);
         System.out.println(all.size());
     }
+
     @Test
     public void test3() {
         List<NodeVo> all = graphSearchService.selectRelatedNode("园");
         all.forEach(System.out::println);
+    }
+
+    @Test
+    public void test4() {
+        List<Relationship> relationships = relationRepository.selectRelatedNode("无居民海岛", "土地权属调查");
+        relationships.forEach(System.out::println);
     }
 }

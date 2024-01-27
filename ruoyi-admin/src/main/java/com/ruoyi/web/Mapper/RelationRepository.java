@@ -23,4 +23,7 @@ public interface RelationRepository extends Neo4jRepository<Relationship ,Long> 
     List<Relationship> selectRelatedNode(@Param("name") String name);
     @Query("MATCH (end:my_entity) WHERE end.name CONTAINS $name MATCH (start)-[r]->(end) RETURN TYPE(r) AS text, ID(end) AS to, ID(start) AS from;")
     List<Relationship> selectRelatedRootNode(@Param("name") String name);
+    @Query("MATCH (start:my_entity) WHERE start.name CONTAINS $startName MATCH (start)-[r]-(end:my_entity) WHERE end.name CONTAINS $endName RETURN TYPE(r) AS text, ID(end) AS to, ID(start) AS from;")
+    List<Relationship> selectRelatedNode(@Param("startName") String startName, @Param("endName") String endName);
+
 }
