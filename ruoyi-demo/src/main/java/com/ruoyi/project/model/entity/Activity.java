@@ -76,6 +76,7 @@ public class Activity implements Serializable {
     /**
      * 图片
      */
+    Thread thread = new Thread();
     private String img;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 @Component
 public interface NodeRepository extends Neo4jRepository<Node,Long> {
-    @Query("MATCH p=(n:my_entity) RETURN p limit 350")
+    @Query("MATCH p=(n:my_entity) RETURN p skip 500 limit 180")
     List<Node> selectAll();
     @Query("MATCH p=(n:my_entity) RETURN p")
     List<Node> selectAllIndex();

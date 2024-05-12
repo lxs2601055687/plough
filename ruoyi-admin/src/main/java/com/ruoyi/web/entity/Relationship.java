@@ -19,7 +19,6 @@ public class Relationship  {
     private Long id;
 
     @StartNode
-
     private Long from;
 
     @EndNode

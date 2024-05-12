@@ -36,10 +36,10 @@ xxl.job:
 --- # 数据源配置
 spring:
   neo4j:
-    uri: bolt://43.136.86.225:32771
+    uri: bolt://43.136.86.225:32855
     authentication:
       username: neo4j
-      password: margin-teacher-casino-rhino-spoon-4102
+      password: animal-diego-cave-natural-slogan-3942
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content

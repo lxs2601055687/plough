@@ -31,6 +31,16 @@ public class Permission {
               "      },\n" +
               "      component: 'Workplace'\n" +
               "    },\n" +
+          "    {\n" +
+          "        path: 'https://sugar.aipage.com/dashboard/6a604a61c22396561e11560caa2ab934',\n" +
+          "      name: 'advanced',\n" +
+          "      parentId: 1,\n" +
+          "      id: 10,\n" +
+          "      meta: {\n" +
+          "        title: '综合数据大屏',\n" +
+          "       target: '_blank'\n" +
+          "      },\n" +
+          "    },\n" +
               "    {\n" +
               "      name: 'Monitor',\n" +
               "      parentId: 1,\n" +
@@ -165,7 +175,7 @@ public class Permission {
               "      id: 10016,\n" +
               "      meta: {\n" +
               "        title: 'menu.list.search-list.projects',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'SearchProjects'\n" +
               "    },\n" +
@@ -175,43 +185,35 @@ public class Permission {
               "      id: 10017,\n" +
               "      meta: {\n" +
               "        title: 'menu.list.search-list.applications',\n" +
-              "        show: true\n" +
+              "        show: false\n" +
               "      },\n" +
               "      component: 'SearchApplications'\n" +
               "    },\n" +
               "\n" +
               "    // profile\n" +
               "    {\n" +
+              "      path: 'https://howu2e70a780f760.maps.arcgis.com/apps/webappviewer/index.html?id=7248d4d5a76a4d35831dd29500ca9354',\n" +
               "      name: 'profile',\n" +
               "      parentId: 0,\n" +
               "      id: 10018,\n" +
               "      meta: {\n" +
-              "        title: 'menu.profile',\n" +
-              "        icon: 'profile',\n" +
-              "        show: false\n" +
+              "        title: '地图可视化',\n" +
+              "        target: '_blank',\n" +
+             "           icon: 'profile'\n" +
               "      },\n" +
-              "      redirect: '/profile/basic',\n" +
-              "      component: 'RouteView'\n" +
+             /* "      redirect: '/profile/basic',\n" +
+              "      component: 'RouteView'\n" +*/
               "    },\n" +
               "    {\n" +
+              "      path: 'https://howu2e70a780f760.maps.arcgis.com/apps/webappviewer/index.html?id=7248d4d5a76a4d35831dd29500ca9354',\n" +
               "      name: 'basic',\n" +
               "      parentId: 10018,\n" +
               "      id: 10019,\n" +
               "      meta: {\n" +
-              "        title: 'menu.profile.basic',\n" +
-              "        show: false\n" +
+              "        title: '海南岛规划用地可视化',\n" +
+              "        target: '_blank'\n" +
               "      },\n" +
-              "      component: 'ProfileBasic'\n" +
-              "    },\n" +
-              "    {\n" +
-              "      name: 'advanced',\n" +
-              "      parentId: 10018,\n" +
-              "      id: 10020,\n" +
-              "      meta: {\n" +
-              "        title: 'menu.profile.advanced',\n" +
-              "        show: false\n" +
-              "      },\n" +
-              "      component: 'ProfileAdvanced'\n" +
+
               "    },\n" +
               "\n" +
               "    // result\n" +

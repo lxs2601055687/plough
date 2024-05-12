@@ -19,8 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 public class PloughGraphController {
@@ -33,30 +34,85 @@ public class PloughGraphController {
     @GetMapping("/api/graph")
     public R<GraphResult> graph() {
         List<Node> nodes = nodeRepository.selectAll();
+        Set<String> nodeIds = nodes.stream()
+            .map(node -> node.getId().toString())
+            .collect(Collectors.toSet());
+
         List<Relationship> relationships = relationRepository.selectAll();
-        List<RelationVo> relationVos = new ArrayList<>();
-        List<NodeVo> nodeVos = new ArrayList<>();
-        relationships.forEach(relationship -> {
-            relationVos.add(new RelationVo(relationship.getFrom().toString(),relationship.getText(),relationship.getTo().toString()));
-        });
-        nodes.forEach(node -> {
-            nodeVos.add(new NodeVo(node.getId().toString(),node.getText(),node.getEntity(),"rgba(30, 144, 255, 1)"));
-        });
+        System.out.println(relationships.size() + " " + nodes.size());
+        List<RelationVo> relationVos = relationships.stream()
+            .map(relationship -> new RelationVo(
+                relationship.getFrom().toString(),
+                relationship.getText(),
+                relationship.getTo().toString()
+            ))
+            .collect(Collectors.toList());
+
+        System.out.println(relationVos.size() + " " + nodes.size());
+        List<NodeVo> nodeVos = nodes.stream()
+            .map(node -> new NodeVo(node.getId().toString(), node.getText(), node.getEntity(), "rgba(30, 144, 255, 1)"))
+            .collect(Collectors.toList());
+        //过滤掉没有关系的节点
+        System.out.println(nodeVos.size() + " " + relationVos.size());
+        // 手动添加的节点，考虑是否需要根据业务逻辑动态添加
+        //过滤relationVos 当from和to都在nodeVos里的时候才保留
+        System.out.println(relationVos.size() + " " + nodeVos.size());
+        // 添加节点代码...
         nodeVos.add(new NodeVo("2008","高标准基本农田建设","e1916","rgba(238, 178, 94, 1)"));
         nodeVos.add(new NodeVo("503","土地整治与规划技术","e503","rgba(238, 178, 94, 1)"));
-        nodeVos.add(new NodeVo("777","GBT 19231-2003 土地基本术语","e1231","rgba(238, 178, 94, 1)"));
-        nodeVos.add(new NodeVo("1913","土地权属调查","e1821","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("1367","土地权属调查","e1821","rgba(238, 178, 94, 1)"));
         nodeVos.add(new NodeVo("777","GBT 19231-2003 土地基本术语","e1231","rgba(238, 178, 94, 1)"));
         nodeVos.add(new NodeVo("789","城乡规划","e1243","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("1254","土地利用现状分类-三调","e1243","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("360","地籍测量","e360","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("503","土地整治与规划技术","e503","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("847","遥感基础知识","e1301","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("1462","高标准基本农田建设","e1916","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("1135","土地利用现状分类-二调","e1589","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("1441","生态规划","e1895","rgba(238, 178, 94, 1)"));
+        nodeVos.add(new NodeVo("1170","建设用地","e1624","rgba(238, 178, 94, 1)"));
+      /*  nodeVos.add(new NodeVo("1696","20180205 第三次全国土地调查技术规程","e1708","rgba(238, 178, 94, 1)"));*/
         /*nodeVos.add(new NodeVo("467","耕地质量","e467","rgba(238, 178, 94, 1)"));*/
-
-        //对relationVos进行去重
+        //给nodeVos排序
+        nodeVos.sort((o1, o2) -> {
+            if (nodeIds.contains(o1.getId()) && nodeIds.contains(o2.getId())) {
+                return 0;
+            }
+            if (nodeIds.contains(o1.getId())) {
+                return -1;
+            }
+            if (nodeIds.contains(o2.getId())) {
+                return 1;
+            }
+            return 0;
+        });
         GraphResult graphResult = new GraphResult();
+        //拿到relationVos里的to出现次数最多的前100个relationVos 然后有这100个to的全保留
+        Map<String, Long> toFrequency = relationVos.stream()
+            .collect(Collectors.groupingBy(RelationVo::getTo, Collectors.counting()));
+
+        // 找到出现次数最多的前100个 'to'
+        List<String> top100Tos = toFrequency.entrySet().stream()
+            .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+            .limit(30)
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
+         top100Tos.forEach(System.out::println);
+        // 过滤 relationVos，仅保留 'to' 在 top100 中的对象
+        List<RelationVo> filteredRelationVos = relationVos.stream()
+            .filter(relationVo -> top100Tos.contains(relationVo.getTo()))
+            .collect(Collectors.toList());
+        filteredRelationVos.forEach(vo -> {
+            System.out.println(vo.toString());
+        });
+        System.out.println(filteredRelationVos.size() + " " + nodeVos.size());
         graphResult.setNodes(nodeVos);
-        graphResult.setLines(relationVos);
-        graphResult.setRootId("1913");
+        graphResult.setLines(filteredRelationVos);
+        graphResult.setRootId("777");
         return R.ok(graphResult);
     }
+
+
     @GetMapping("/api/graph/search/{name}")
     public R<GraphResult> search(@PathVariable("name") String name) {
         List<NodeVo> nodeVos = graphSearchService.selectRelatedNode(name);
@@ -115,155 +171,87 @@ public class PloughGraphController {
     @PostMapping("/api/graph/search/sop/finish")
     public R<GraphResult> sopFinish(@RequestBody SopVo sopVo) {
         System.out.println(sopVo.toString());
-        if(sopVo.getSubject().equals("null")&&sopVo.getObject().equals("null")&&sopVo.getPredicate().equals("null")){
+
+        if (isNullOrEmpty(sopVo.getSubject()) && isNullOrEmpty(sopVo.getObject()) && isNullOrEmpty(sopVo.getPredicate())) {
             return R.ok();
         }
-        if(!sopVo.getSubject().equals("null")&&!sopVo.getObject().equals("null")){
-            List<NodeVo> nodeVos = new ArrayList<>();
-            List<Relationship> relationships = new ArrayList<>();
-            List<Relationship> relationships1 = new ArrayList<>();
-                nodeVos = graphSearchService.selectRelatedNode(sopVo.getSubject());
-                if(nodeVos.size()==0){
-                    nodeVos = graphSearchService.selectRelatedNode(sopVo.getObject());
-                }
-                relationships = relationRepository.selectRelatedNode(sopVo.getSubject(),sopVo.getObject());
-                if(relationships.size()==0){
-                    relationships = relationRepository.selectRelatedNode(sopVo.getSubject());
-                    relationships1 = relationRepository.selectRelatedRootNode(sopVo.getObject());
-                }
-                if(relationships.size()==1){
-                    Relationship relationship = relationships.get(0);
-                    //过滤nodeVos只保留relationship的to和from
-                    List<NodeVo> nodeVos1 = new ArrayList<>();
-                    nodeVos.forEach(nodeVo -> {
-                        if(nodeVo.getId().equals(relationship.getFrom().toString())||nodeVo.getId().equals(relationship.getTo().toString())){
-                            nodeVos1.add(nodeVo);
-                        }
-                    });
-                    nodeVos = nodeVos1;
-                }
-                if(relationships.size()!= 0 || relationships1.size()!=0){
-                    //把关系的to和from加入存在一个数组里 然后过滤nodeVos只保留这个数组里的
-                    List<String> nodeIds = new ArrayList<>();
-                    relationships.forEach(relationship -> {
-                        nodeIds.add(relationship.getFrom().toString());
-                        nodeIds.add(relationship.getTo().toString());
-                    });
-                    relationships1.forEach(relationship -> {
-                        nodeIds.add(relationship.getFrom().toString());
-                        nodeIds.add(relationship.getTo().toString());
-                    });
-                    List<NodeVo> nodeVos1 = new ArrayList<>();
-                    nodeVos.forEach(nodeVo -> {
-                        if(nodeIds.contains(nodeVo.getId())){
-                            nodeVos1.add(nodeVo);
-                        }
-                    });
-                    nodeVos = nodeVos1;
 
-                }
+        if (isValidSopQuery(sopVo)) {
+            List<NodeVo> nodes = queryNodes(sopVo.getSubject(), sopVo.getObject());
+            List<Relationship> relationships = queryRelationships(sopVo.getSubject(), sopVo.getObject());
 
-        /*if(!sopVo.getObject().equals("null")){
-            nodeVos.addAll(graphSearchService.selectRelatedNode(sopVo.getObject()));
-            relationships.addAll(relationRepository.selectRelatedNode(sopVo.getObject()));
-            relationships1.addAll(relationRepository.selectRelatedRootNode(sopVo.getObject()));
-        }*/
-       /* if(!sopVo.getPredicate().equals("null")){
-            nodeVos.addAll(graphSearchService.selectRelatedNode(sopVo.getObject()));
-            relationships.addAll(relationRepository.selectRelatedNode(sopVo.getObject()));
-            relationships1.addAll(relationRepository.selectRelatedRootNode(sopVo.getObject()));
-        }*/
-            //给nodeVos去重
-            List<NodeVo> nodeVos1 = new ArrayList<>();
-            for (NodeVo nodeVo : nodeVos) {
-                if (!nodeVos1.contains(nodeVo)) {
-                    nodeVos1.add(nodeVo);
-                }
-            }
-            nodeVos = nodeVos1;
-            //给relationships去重
-            relationships.addAll(relationships1);
-            List<Relationship> relationships2 = new ArrayList<>();
-            for (Relationship relationship : relationships) {
-                if (!relationships2.contains(relationship)) {
-                    relationships2.add(relationship);
-                }
-            }
-            relationships = relationships2;
-            GraphResult graphResult = new GraphResult();
-            graphResult.setNodes(nodeVos);
-            List<RelationVo> relationVos = new ArrayList<>();
-            relationships.forEach(relationship -> {
-                relationVos.add(new RelationVo(relationship.getFrom().toString(),relationship.getText(),relationship.getTo().toString()));
-            });
-            graphResult.setLines(relationVos);
-            //rootId应该是to数组里出现次数最多的内个
+            nodes = filterNodesByRelationships(nodes, relationships);
+            relationships = new ArrayList<>(new HashSet<>(relationships)); // 去重关系
 
-            List<String> nodesId = new ArrayList<>();
-            relationships.forEach(relationship -> {
-                nodesId.add(relationship.getTo().toString());
-            });
-            String rootId = NodeUtils.findRootId(nodesId);
-            graphResult.setRootId(rootId);
-            System.out.println(graphResult.toString());
-            return R.ok(graphResult);
-        }
-        if(!sopVo.getSubject().equals("null")){
-            List<NodeVo> nodeVos = new ArrayList<>();
-            List<Relationship> relationships = new ArrayList<>();
-            List<Relationship> relationships1 = new ArrayList<>();
-            if(!sopVo.getSubject().equals("null")){
-                nodeVos = graphSearchService.selectRelatedNode(sopVo.getSubject());
-                relationships = relationRepository.selectRelatedNode(sopVo.getSubject());
-                relationships1 = relationRepository.selectRelatedRootNode(sopVo.getSubject());
-            }
-        /*if(!sopVo.getObject().equals("null")){
-            nodeVos.addAll(graphSearchService.selectRelatedNode(sopVo.getObject()));
-            relationships.addAll(relationRepository.selectRelatedNode(sopVo.getObject()));
-            relationships1.addAll(relationRepository.selectRelatedRootNode(sopVo.getObject()));
-        }*/
-       /* if(!sopVo.getPredicate().equals("null")){
-            nodeVos.addAll(graphSearchService.selectRelatedNode(sopVo.getObject()));
-            relationships.addAll(relationRepository.selectRelatedNode(sopVo.getObject()));
-            relationships1.addAll(relationRepository.selectRelatedRootNode(sopVo.getObject()));
-        }*/
-            //给nodeVos去重
-            List<NodeVo> nodeVos1 = new ArrayList<>();
-            for (NodeVo nodeVo : nodeVos) {
-                if (!nodeVos1.contains(nodeVo)) {
-                    nodeVos1.add(nodeVo);
-                }
-            }
-            nodeVos = nodeVos1;
-            //给relationships去重
-            relationships.addAll(relationships1);
-            List<Relationship> relationships2 = new ArrayList<>();
-            for (Relationship relationship : relationships) {
-                if (!relationships2.contains(relationship)) {
-                    relationships2.add(relationship);
-                }
-            }
-            relationships = relationships2;
-            GraphResult graphResult = new GraphResult();
-            graphResult.setNodes(nodeVos);
-            List<RelationVo> relationVos = new ArrayList<>();
-            relationships.forEach(relationship -> {
-                relationVos.add(new RelationVo(relationship.getFrom().toString(),relationship.getText(),relationship.getTo().toString()));
-            });
-            graphResult.setLines(relationVos);
-            //rootId应该是to数组里出现次数最多的内个
-
-            List<String> nodesId = new ArrayList<>();
-            relationships.forEach(relationship -> {
-                nodesId.add(relationship.getTo().toString());
-            });
-            String rootId = NodeUtils.findRootId(nodesId);
-            graphResult.setRootId(rootId);
+            GraphResult graphResult = createGraphResult(nodes, relationships);
             System.out.println(graphResult.toString());
             return R.ok(graphResult);
         }
 
         return R.ok();
     }
+
+    private GraphResult createGraphResult(List<NodeVo> nodes, List<Relationship> relationships) {
+        GraphResult graphResult = new GraphResult();
+        graphResult.setNodes(nodes);
+
+        List<RelationVo> relationVos = relationships.stream()
+            .map(r -> new RelationVo(r.getFrom().toString(), r.getText(), r.getTo().toString()))
+            .collect(Collectors.toList());
+        graphResult.setLines(relationVos);
+
+        String rootId = NodeUtils.findRootId(relationships.stream()
+            .map(Relationship::getTo)
+            .map(Object::toString)
+            .collect(Collectors.toList()));
+        graphResult.setRootId(rootId);
+
+        return graphResult;
+    }
+    // 将字符串 "null" 判断改为更合适的空值检查
+    private boolean isNullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty() || "null".equals(value.trim());
+    }
+
+    // 检查 SOP 条件是否符合查询要求
+    private boolean isValidSopQuery(SopVo sopVo) {
+        return !isNullOrEmpty(sopVo.getSubject()) && !isNullOrEmpty(sopVo.getObject());
+    }
+    // 查询节点和关系
+    private List<NodeVo> queryNodes(String subject, String object) {
+        List<NodeVo> nodeVos = graphSearchService.selectRelatedNode(subject);
+        if (nodeVos.isEmpty()) {
+            nodeVos = graphSearchService.selectRelatedNode(object);
+        }
+        return nodeVos;
+    }
+
+    private List<Relationship> queryRelationships(String subject, String object) {
+        List<Relationship> relationships = relationRepository.selectRelatedNode(subject, object);
+        List<Relationship> relationships1 = new ArrayList<>();
+        if(relationships.isEmpty() || relationships.size() < 2) {
+            relationships1.addAll(relationRepository.selectRelatedNode(subject));
+            relationships1.addAll(relationRepository.selectRelatedRootNode(object));
+        }
+        if (relationships1.isEmpty() || relationships1.size() < 2) {
+            relationships.addAll(relationRepository.selectRelatedRootNode(subject));
+            if(relationships.size()>100 && relationships1.size()<2) {
+                relationships = relationships.subList(0, 100);
+            }
+        }
+        relationships.addAll(relationships1);
+        return relationships;
+    }
+
+    // 过滤节点基于关系ID
+    private List<NodeVo> filterNodesByRelationships(List<NodeVo> nodes, List<Relationship> relationships) {
+        Set<String> relevantIds = relationships.stream()
+            .flatMap(r -> Stream.of(r.getFrom().toString(), r.getTo().toString()))
+            .collect(Collectors.toSet());
+        return nodes.stream()
+            .filter(node -> relevantIds.contains(node.getId()))
+            .collect(Collectors.toList());
+    }
+
 
 }
